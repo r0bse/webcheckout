@@ -7,8 +7,8 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
-import liquibase.integration.spring.SpringLiquibase;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.hibernate.ejb.HibernatePersistence;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
@@ -16,9 +16,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -27,7 +24,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -79,24 +75,27 @@ public class JpaConfiguration {
         em.setPackagesToScan( JPA_PACKAGE );
         em.setJpaVendorAdapter( jpaVendorAdapter() );
         em.setJpaProperties( additionalJpaProperties() );
-
-        HikariDataSource dataSource = new HikariDataSource( hikariConfig( driverClassName, url, user, password ) );
+        em.setPersistenceProviderClass(HibernatePersistence.class);
+        em.setDataSource(dataSource());
         log.debug( "updating db {} with liquibase", dbName );
-        updateDbWithLiquibase( dataSource );
+        updateDbWithLiquibase( dataSource() );
 
         return em;
     }
 
-//    @Bean
-//    public DataSource dataSource() {
-//
+    @Bean
+    public DataSource dataSource() {
+
 //        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
 //        EmbeddedDatabase db = builder
 //                                .setType( EmbeddedDatabaseType.HSQL )
 //                                .setName( dbName )
 //                                .build();
-//        return db;
-//    }
+
+        HikariDataSource dataSource = new HikariDataSource( hikariConfig( driverClassName, url, user, password ) );
+        return dataSource;
+    }
+
 //    @Bean
 //    public SpringLiquibase liquibase( DataSource dataSource ) {
 //
@@ -164,7 +163,7 @@ public class JpaConfiguration {
         properties.putAll( jpaProperties.getProperties() );
 
         // disable jpa mapping validation
-        properties.put( "hibernate.hbm2ddl.auto", "" );
+        properties.put( "hibernate.hbm2ddl.auto", "none" );
 
         log.debug( "using jpa properties:" );
         properties.keySet().stream().forEach( key -> log.debug( "{}:{}", key, properties.get( key ) ) );
