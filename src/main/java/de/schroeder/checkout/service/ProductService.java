@@ -28,15 +28,15 @@ public class ProductService {
     @Transactional
     public void initialSetup(){
 
-//        SkuEntity skuA = skuService.createAndSaveSkuEntity( 'A', 40L);
-//        SkuEntity skuB = skuService.createAndSaveSkuEntity( 'B', 50L);
-//        SkuEntity skuC = skuService.createAndSaveSkuEntity( 'C', 25L);
-//        SkuEntity skuD = skuService.createAndSaveSkuEntity( 'D', 20L);
-//
-//        discountService.createAndSave( calculateDiscount( 100.0, 120.0 ), 3, skuA );
-//        discountService.createAndSave( calculateDiscount( 80.0, 100.0 ), 2, skuB );
-//        discountService.createAndSave( 1.0, 1, skuC );
-//        discountService.createAndSave( 1.0, 1, skuD );
+        SkuEntity skuA = skuService.createAndSaveSkuEntity( 'A', 40L);
+        SkuEntity skuB = skuService.createAndSaveSkuEntity( 'B', 50L);
+        SkuEntity skuC = skuService.createAndSaveSkuEntity( 'C', 25L);
+        SkuEntity skuD = skuService.createAndSaveSkuEntity( 'D', 20L);
+
+        discountService.createAndSave( calculateDiscount( 100.0, 120.0 ), 3, skuA );
+        discountService.createAndSave( calculateDiscount( 80.0, 100.0 ), 2, skuB );
+        discountService.createAndSave( 1.0, 1, skuC );
+        discountService.createAndSave( 1.0, 1, skuD );
     }
 
     /**

@@ -1,7 +1,14 @@
 package de.schroeder.checkout.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
+import liquibase.resource.ClassLoaderResourceAccessor;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
@@ -45,6 +52,18 @@ public class JpaConfiguration {
     @Value( "${liquibase.change-log}" )
     private String changelogPath;
 
+    @Value( "${spring.datasource.driver-class-name}" )
+    private String driverClassName;
+
+    @Value( "${spring.datasource.url}" )
+    private String url;
+
+    @Value( "${spring.datasource.username}" )
+    private String user;
+
+    @Value( "${spring.datasource.password}" )
+    private String password;
+
     @Inject
     private JpaProperties jpaProperties;
 
@@ -61,45 +80,76 @@ public class JpaConfiguration {
         em.setJpaVendorAdapter( jpaVendorAdapter() );
         em.setJpaProperties( additionalJpaProperties() );
 
-//        log.debug( "updating db {} with liquibase", dbName );
-//        updateDbWithLiquibase( dataSource() );
+        HikariDataSource dataSource = new HikariDataSource( hikariConfig( driverClassName, url, user, password ) );
+        log.debug( "updating db {} with liquibase", dbName );
+        updateDbWithLiquibase( dataSource );
 
         return em;
     }
 
-    @Bean
-    public DataSource dataSource() {
-
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase db = builder
-                .setType( EmbeddedDatabaseType.HSQL )
-                .setName( dbName )
-                .build();
-        return db;
-    }
-    @Bean
-    public SpringLiquibase liquibase( DataSource dataSource ) {
-
-        SpringLiquibase sl = new SpringLiquibase();
-        sl.setDataSource( dataSource );
-        sl.setChangeLog( changelogPath );
-        sl.setShouldRun( true );
-        sl.setDropFirst( true );
-
-        return sl;
-    }
-
-//    private void updateDbWithLiquibase( DataSource ds ) throws SQLException, LiquibaseException {
+//    @Bean
+//    public DataSource dataSource() {
 //
-//        Database database = DatabaseFactory.getInstance()
-//                .findCorrectDatabaseImplementation( new JdbcConnection( ds.getConnection() ) );
-//
-//        Liquibase liquibase = new Liquibase( changelogPath, new ClassLoaderResourceAccessor(), database );
-//
-//        log.info( "executing liquibase update" );
-//        liquibase.update("");
-//        log.info( "finished liquibase update" );
+//        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+//        EmbeddedDatabase db = builder
+//                                .setType( EmbeddedDatabaseType.HSQL )
+//                                .setName( dbName )
+//                                .build();
+//        return db;
 //    }
+//    @Bean
+//    public SpringLiquibase liquibase( DataSource dataSource ) {
+//
+//        SpringLiquibase sl = new SpringLiquibase();
+//        sl.setDataSource( dataSource );
+//        sl.setChangeLog( changelogPath );
+//        sl.setShouldRun( true );
+//        sl.setDropFirst( true );
+//
+//        return sl;
+//    }
+
+    /**
+     * provide a connection pooling datasource
+     *
+     * @param driverClass
+     * @param url
+     * @param user
+     * @param password
+     * @return
+     */
+    private HikariConfig hikariConfig( String driverClass,
+                                       String url,
+                                       String user,
+                                       String password ) {
+
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName( driverClass );
+        config.setJdbcUrl( url );
+        config.setUsername( user );
+        config.setPassword( password );
+
+        return config;
+    }
+
+    /**
+     * run liquibase on application startup
+     *
+     * @param ds
+     * @throws SQLException
+     * @throws LiquibaseException
+     */
+    private void updateDbWithLiquibase( DataSource ds ) throws SQLException, LiquibaseException {
+
+        Database database = DatabaseFactory.getInstance()
+                .findCorrectDatabaseImplementation( new JdbcConnection( ds.getConnection() ) );
+
+        Liquibase liquibase = new Liquibase( changelogPath, new ClassLoaderResourceAccessor(), database );
+
+        log.info( "executing liquibase update" );
+        liquibase.update( "" );
+        log.info( "finished liquibase update" );
+    }
 
     /**
      * add additional properties to JPA

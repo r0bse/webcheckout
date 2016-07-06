@@ -15,7 +15,7 @@ logging:
 liquibase:
   drop-first: true # all tables are dropped on startup
   enabled: false # Enable liquibase auto configuration, but it is called programmatically
-  change-log: classpath:db.changelog/db.changelog-master.yaml # Change log configuration path.
+  change-log: db.changelog/db.changelog-master.yaml # Change log configuration path.
 
 spring:
   main:
