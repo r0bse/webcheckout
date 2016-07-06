@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Web Checkout</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Web Checkout</h1>
+
+
+<h2>List of SKUs</h2>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>SKU</th>
+        <th>Default Price</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="sku : ${skus}">
+        <td th:text="${sku.id}">Id</td>
+        <td th:text="${sku.productName}">SKU</td>
+        <td th:text="${sku.defaultCentPrice}">Default Price</td>
+        <td>
+            <form method="post" th:action="@{/checkout/scan}" th:object="${sku}">
+                <button type="submit">Add to basket</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<h2>Add a new rule</h2>
+<table>
+    <tr>
+        <th>SKU Name</th>
+        <th>Default Price</th>
+        <th>amount</th>
+        <th>discount</th>
+        <th>Action</th>
+    </tr>
+    <tr>
+        <td>
+            <input type="text"/>
+        </td>
+        <td>
+            <input type="text"/>
+        </td>
+        <td>
+            <input type="text"/>
+        </td>
+        <td>
+            <input type="text"/>
+        </td>
+    </tr>
+    <td>
+        <form method="post" th:action="@{/skus/add}" th:object="${sku}">
+            <button type="submit">Add</button>
+        </form>
+    </td>
+</table>
+</body>
+</html>

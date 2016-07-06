@@ -1,0 +1,70 @@
+# Compiled source #
+###################
+target
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+
+# local js modules
+##################
+
+node_modules
+bower_components
+karma_html
+dist
+tp-web/src/main/resources/static/js/main.js
+tp-web/src/main/resources/static/js/main.js.map
+node
+npm-debug.log
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files #
+#############
+nbproject
+.~lock.*
+.buildpath
+.idea
+*.orig
+*.iml
+.project
+.settings
+composer.lock
+.metadata
+*.classpath
+
+# other folders #
+#################
+.mvn
+.idea

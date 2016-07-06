@@ -1,0 +1,6 @@
+#loads automatically via Spring boot (since it is default location and default name)
+databaseChangeLog:
+
+  - include:
+    - relativeToChangelogFile: true
+    - file: initial.setup/db.changelog.initial-schema.yaml

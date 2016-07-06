@@ -1,0 +1,42 @@
+
+### LOGGING
+logging:
+  level:
+    de:
+      schroeder:
+        checkout: debug
+    liquibase: debug
+    org:
+      hibernate: info
+      springframework: info
+
+
+### DATABASE
+liquibase:
+  drop-first: true # all tables are dropped on startup
+  enabled: false # Enable liquibase auto configuration, but it is called programmatically
+  change-log: classpath:db.changelog/db.changelog-master.yaml # Change log configuration path.
+
+spring:
+  main:
+    banner-mode: "OFF"
+  datasource:
+    url: jdbc:h2:mem:checkoutdb #;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    #database-platform: org.hibernate.dialect.H2Dialect
+    show_sql: true
+    format_sql: true
+    hibernate:
+      ddl-auto: validate
+    properties: # native jpa properties
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enables: false
+
+application:
+  databasename: checkoutdb
