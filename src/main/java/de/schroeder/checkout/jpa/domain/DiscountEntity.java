@@ -52,11 +52,6 @@ public class DiscountEntity extends BaseEntity<DiscountEntity>{
         return amount;
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
     public SkuEntity getSkuEntity() {
         return skuEntity;
     }

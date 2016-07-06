@@ -1,7 +1,5 @@
 package de.schroeder.checkout.jpa.domain;
 
-import org.springframework.data.annotation.PersistenceConstructor;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -27,11 +25,6 @@ public class ShoppingBasketEntity extends BaseEntity<ShoppingBasketEntity> {
      */
     @Deprecated
     protected ShoppingBasketEntity() {
-    }
-
-    @Override
-    public Long getId() {
-        return id;
     }
 
     public List<SkuEntity> getSkuEntityList() {

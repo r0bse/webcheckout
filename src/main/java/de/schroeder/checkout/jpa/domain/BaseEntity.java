@@ -17,8 +17,8 @@ public abstract class BaseEntity<TYPE extends BaseEntity<TYPE>> implements Seria
 
     @Id
     @Column(name="id", updatable=false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    protected Long id;
+    @GeneratedValue//(strategy = GenerationType.SEQUENCE)
+    protected Integer id;
 
     /**
      * generalised creation of id definition
@@ -26,14 +26,16 @@ public abstract class BaseEntity<TYPE extends BaseEntity<TYPE>> implements Seria
      *
      * @return
      */
-    public abstract Long getId();
+    public Integer getId(){
+       return id;
+    }
 
     /**
      * don't allow setting the id manually
      *
      * @param id
      */
-    protected void setId(Long id) {
+    protected void setId(Integer id) {
         this.id = id;
     }
 

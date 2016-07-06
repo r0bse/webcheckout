@@ -5,9 +5,7 @@ import de.schroeder.checkout.jpa.repo.SkuJpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author schroeder
@@ -29,13 +27,13 @@ public class SkuService {
     public SkuEntity createAndSaveSkuEntity( Character productname,
                                              Long defaultPrice ) {
 
-        return skuJpaRepository.save( new SkuEntity( productname, defaultPrice ) );
+        SkuEntity sku = new SkuEntity( productname, defaultPrice );
+        return skuJpaRepository.save( sku );
     }
 
     public Collection<SkuEntity> findAll() {
-        List<SkuEntity> list = new ArrayList<SkuEntity>(  );
-        list.add( new SkuEntity( 'A', 20L ) );
-        return list;//skuJpaRepository.findAll();
+
+        return skuJpaRepository.findAll();
     }
 
     public SkuEntity getByProductName( char c ) {

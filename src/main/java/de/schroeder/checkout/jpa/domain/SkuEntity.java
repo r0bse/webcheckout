@@ -54,9 +54,4 @@ public class SkuEntity extends BaseEntity<SkuEntity>{
     public Set<DiscountEntity> getDiscountEntities() {
         return discountEntities;
     }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
 }

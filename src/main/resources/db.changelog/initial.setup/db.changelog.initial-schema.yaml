@@ -19,7 +19,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -32,13 +32,16 @@ databaseChangeLog:
               - column:
                   name: default_price
                   type: bigint
+              - column:
+                  name: shopping_basket
+                  type: int
 
         - createTable:
             tableName: discount
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -50,7 +53,7 @@ databaseChangeLog:
                   type: double
               - column:
                   name: sku
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
 
@@ -59,29 +62,29 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: sku
-                  type: bigint
+                  type: int
 
         - createTable:
             tableName: basket_has_sku
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: basket
-                  type: bigint
+                  type: int
               - column:
                   name: sku
-                  type: bigint
+                  type: int
 
 #-----------------------------------------------------------------------------------------------------------------------
 #

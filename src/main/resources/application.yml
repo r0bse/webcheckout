@@ -21,7 +21,7 @@ spring:
   main:
     banner-mode: "OFF"
   datasource:
-    url: jdbc:h2:mem:checkoutdb #;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    url: jdbc:h2:mem:checkoutdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
     driver-class-name: org.h2.Driver
     username: sa
     password:
